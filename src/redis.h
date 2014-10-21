@@ -388,6 +388,10 @@ typedef long long mstime_t; /* millisecond time type. */
 #define redisAssert(_e) ((_e)?(void)0 : (_redisAssert(#_e,__FILE__,__LINE__),_exit(1)))
 #define redisPanic(_e) _redisPanic(#_e,__FILE__,__LINE__),_exit(1)
 
+/* DSDC master stuff */
+
+#define REDIS_DSDC_MAX_MASTERS 100
+
 /*-----------------------------------------------------------------------------
  * Data types
  *----------------------------------------------------------------------------*/
@@ -883,6 +887,10 @@ struct redisServer {
     int assert_line;
     int bug_report_start; /* True if bug report header was already logged. */
     int watchdog_period;  /* Software watchdog period in ms. 0 = off */
+
+    char* dsdc_masters[REDIS_DSDC_MAX_MASTERS];
+    int dsdc_master_count;
+    int dsdc_num_keys;
 };
 
 typedef struct pubsubPattern {

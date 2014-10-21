@@ -31,6 +31,7 @@
 #include "cluster.h"
 #include "slowlog.h"
 #include "bio.h"
+#include "dsdc.h"
 
 #include <time.h>
 #include <signal.h>
@@ -1527,6 +1528,9 @@ void initServerConfig(void) {
     server.assert_line = 0;
     server.bug_report_start = 0;
     server.watchdog_period = 0;
+
+    server.dsdc_master_count = 0;
+    server.dsdc_num_keys = 5;
 }
 
 /* This function will try to raise the max number of open files accordingly to
@@ -1833,6 +1837,7 @@ void initServer(void) {
     slowlogInit();
     latencyMonitorInit();
     bioInit();
+    dsdcInit();
 }
 
 /* Populates the Redis Command Table starting from the hard coded list

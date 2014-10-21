@@ -160,6 +160,16 @@ void loadServerConfigFromString(char *config) {
             } else if (argc == 2 && !strcasecmp(argv[1],"")) {
                 resetServerSaveParams();
             }
+        } else if (!strcasecmp(argv[0], "dsdc_masters") && argc >= 2) {
+            int j, dsdcs = argc-1;
+            if (dsdcs > REDIS_DSDC_MAX_MASTERS) {
+                err = "Too many DSDC masters specified"; goto loaderr;
+            }
+            for (j = 0; j < dsdcs; j++)
+                server.dsdc_masters[j] = zstrdup(argv[j+1]);
+            server.dsdc_master_count = dsdcs;
+        } else if (!strcasecmp(argv[0], "dsdc_num_keys") && argc == 2) {
+            server.dsdc_num_keys = atoi(argv[1]);
         } else if (!strcasecmp(argv[0],"dir") && argc == 2) {
             if (chdir(argv[1]) == -1) {
                 redisLog(REDIS_WARNING,"Can't chdir to '%s': %s",
